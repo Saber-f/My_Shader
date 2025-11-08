@@ -1,0 +1,108 @@
+# Cocos Creator Shader 学习项目规则
+
+## 项目概述
+这是一个 Cocos Creator 3.8.7 的 Shader 学习项目，主要用于学习和实践 Shader/Effect 开发。
+
+## 技术栈
+- Cocos Creator 3.8.7
+- Effect Shader (GLSL ES)
+- TypeScript
+- Node.js
+
+## 代码规范
+
+### 文件命名
+- Shader 文件使用 `.effect` 扩展名
+- 材质文件使用 `.mtl` 扩展名
+- TypeScript 文件使用 `.ts` 扩展名
+- 文件名使用小写字母和连字符（kebab-case）
+
+### 代码风格
+- 使用 2 个空格进行缩进
+- 使用单引号
+- 行尾使用分号
+- 遵循项目中的 `.editorconfig`、`.prettierrc` 和 `.eslintrc.json` 配置
+
+### Shader/Effect 文件规范
+- Effect 文件使用 Cocos Creator 的 Effect 语法
+- 精度声明：使用 `precision highp float;`
+- 包含必要的头文件：`#include <input>`, `#include <cc-global>` 等
+- 属性命名：使用 Cocos Creator 标准命名（如 `a_position`, `v_uv`, `u_color`）
+- 添加必要的注释说明 Shader 的功能和参数
+
+### Cocos Creator 默认输入输出变量
+
+#### 顶点着色器 (Vertex Shader) 标准输入变量
+以下变量由 Cocos Creator 引擎自动传入，应在顶点着色器中声明：
+- `in vec3 a_position;` - 顶点位置（模型空间坐标）
+- `in vec2 a_texCoord;` - 纹理坐标（UV 坐标）
+- `in vec4 a_color;` - 顶点颜色（通常用于颜色混合）
+
+#### 顶点着色器 (Vertex Shader) 标准输出变量
+以下变量用于从顶点着色器传递数据到片段着色器：
+- `out vec2 uv0;` - 传递给片段着色器的纹理坐标
+- `out vec4 color;` - 传递给片段着色器的颜色值
+
+#### 片段着色器 (Fragment Shader) 标准输入变量
+以下变量从顶点着色器接收数据：
+- `in vec2 uv0;` - 从顶点着色器接收的纹理坐标
+- `in vec4 color;` - 从顶点着色器接收的颜色值
+
+#### 标准 Uniform 变量
+- `cc_matViewProj` - 视图投影矩阵（用于将模型空间坐标转换到裁剪空间）
+- `cc_spriteTexture` - Sprite 纹理采样器（layout(set = 2, binding = 12)）
+
+#### 使用规范
+创建新的 Shader 时，应遵循以下约定：
+1. 顶点着色器必须包含所有标准输入变量（`a_position`, `a_texCoord`, `a_color`）
+2. 顶点着色器必须输出纹理坐标和颜色给片段着色器（`uv0`, `color`）
+3. 片段着色器必须声明对应的输入变量（`uv0`, `color`）
+4. 确保变量名称与上述标准命名完全一致，以保证引擎正确传递数据
+
+### TypeScript 代码规范
+- 使用 TypeScript 严格模式（如果适用）
+- 类型注解要明确
+- 使用 Cocos Creator 的 API（如 `cc.Node`, `cc.Material` 等）
+- 避免使用 `any` 类型，除非必要
+
+## 目录结构约定
+- `assets/shaders/` - 存放所有 Shader/Effect 文件
+- `assets/materials/` - 存放材质文件
+- `assets/scripts/` - 存放 TypeScript 脚本文件
+
+## 代码生成规则
+
+### 创建新的 Shader 时
+1. 提供完整的 Effect 文件结构（CCEffect、CCProgram）
+2. 包含必要的属性和参数
+3. 添加中文注释说明各部分功能
+4. 确保兼容 Cocos Creator 3.8.7
+
+### 创建 TypeScript 脚本时
+1. 使用 TypeScript 语法
+2. 导入必要的 Cocos Creator 模块
+3. 添加适当的类型注解
+4. 包含错误处理
+
+### 代码注释
+- 所有 Shader 代码需要添加中文注释
+- 解释复杂的数学运算和算法
+- 说明每个属性的用途和取值范围
+- TypeScript 代码中的函数和类需要添加 JSDoc 注释（中文）
+
+## 注意事项
+- 不要修改 `temp/` 和 `library/` 目录中的文件（这些是自动生成的）
+- 保存 Shader 文件后需要在 Cocos Creator 中重新编译
+- 注意 Shader 的跨平台兼容性（WebGL、WebGL2）
+- 性能考虑：避免在 Shader 中进行过于复杂的计算
+
+## 常用 Cocos Creator API
+- `cc.Node` - 节点类
+- `cc.Material` - 材质类
+- `cc.EffectAsset` - Effect 资源类
+- `cc.gfx` - 图形接口
+- `cc.game` - 游戏实例
+
+## 响应语言
+始终使用中文回复和注释。
+

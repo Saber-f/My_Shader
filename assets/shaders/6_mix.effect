@@ -1,0 +1,38 @@
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: vs:vert
+      frag: fs:frag
+}%
+
+CCProgram vs %{
+  precision highp float;
+  #include <cc-global>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  out vec2 uv0;
+
+    
+  vec4 vert() {
+    vec4 pos = vec4(a_position, 1);
+    pos = cc_matViewProj * pos;
+    uv0 = a_texCoord;
+    return pos;
+  }
+}%
+
+CCProgram fs %{
+  precision highp float;
+  #include <cc-global>
+
+  in vec2 uv0;
+
+
+  vec4 frag() {
+    vec4 colorA = vec4(1,0,0,1);
+    vec4 colorB = vec4(0,1,1,1);
+    vec4 color = mix(colorA, colorB, abs(mod(cc_time.x,2.0)-1.0));
+    return color;
+  }
+}%

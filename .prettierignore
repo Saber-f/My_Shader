@@ -1,0 +1,8 @@
+# 忽略的文件和目录
+node_modules/
+library/
+temp/
+build/
+*.meta
+package-lock.json
+

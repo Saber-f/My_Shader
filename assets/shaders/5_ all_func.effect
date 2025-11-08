@@ -1,0 +1,58 @@
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: vs:vert
+      frag: fs:frag
+}%
+
+CCProgram vs %{
+  precision highp float;
+  #include <cc-global>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  out vec2 uv0;
+
+    
+  vec4 vert() {
+    vec4 pos = vec4(a_position, 1);
+    pos = cc_matViewProj * pos;
+    uv0 = a_texCoord;
+    return pos;
+  }
+}%
+
+CCProgram fs %{
+  precision highp float;
+
+  in vec2 uv0;
+
+  float plot(vec2 uv){
+    float x = uv.x;
+    float y = x;
+    // y = step(0.5,x); // 如果 x 小于 0.5，返回 0.0，否则返回 1.0
+    // y = smoothstep(0.2,0.8,x); // 如果 x 小于 0.2，返回 0.0，如果 x 大于 0.8，返回 1.0，否则在 0.0 和 1.0 之间线性插值
+    // y = mod(x,0.5); // 返回 x 对 0.5 取模的值
+    // y = fract(x*2.0); // 仅仅返回数的小数部分
+    // y = ceil(x-0.5);  // 向正无穷取整
+    // y = floor(x+0.5); // 向负无穷取整
+    // y = sign(x-0.5)/4.0 + 0.5;  // 提取 x 的正负号
+    // y = abs(x);   // 返回 x 的绝对值
+    // y = clamp(x,0.4,0.6); // 如果 x 小于 0.4，返回 0.4，如果 x 大于 0.6，返回 0.6，否则返回 x
+    // y = min(0.0,x);   // 返回 x 和 0.0 中的较小值
+    // y = max(0.0,x);   // 返回 x 和 0.0 中的较大值 
+
+    // y = mix(colorA, colorB, 0.1); // 在 colorA 和 colorB 之间线性插值，0.1 是插值比例
+
+    // vec4 vector;
+    // vector[0] = vector.r = vector.x = vector.s;
+    // vector[1] = vector.g = vector.y = vector.t;
+    // vector[2] = vector.b = vector.z = vector.p;
+    // vector[3] = vector.a = vector.w = vector.q;
+    return y;
+  }
+
+  vec4 frag() {
+    return vec4(plot(uv0), 0, 0, 1);
+  }
+}%
